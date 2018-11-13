@@ -24,25 +24,26 @@ public class testServer extends Thread {
             //System.out.println(in.readUTF());
             DataOutputStream out = new DataOutputStream(server.getOutputStream());
             try {
-               out.writeUTF("Uno");
-               Thread.sleep(2000);
-               out.writeUTF("Dos");
-               Thread.sleep(2000);
-               out.writeUTF("Tres\n");
-               Thread.sleep(2000);
-               out.writeUTF("Quatro");
-               Thread.sleep(2000);
-               out.writeUTF("Cinco\n");
-               Thread.sleep(2000);
-               out.writeUTF("End");
-               Thread.sleep(2000);
+               out.writeInt(1);
+               Thread.sleep(1000);
+               out.writeInt(2);
+               Thread.sleep(1000);                           
+               out.writeInt(3);
+               Thread.sleep(1000);
+               out.writeInt(4);
+               Thread.sleep(1000);
+               out.writeInt(-1);
+               Thread.sleep(1000);                              
+               out.writeInt(3);
+               Thread.sleep(1000);
+               out.writeInt(6);
+               Thread.sleep(1000);
             } catch(InterruptedException e) {}
             server.close();
          } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
             break;
          } catch (IOException e) {
-            e.printStackTrace();
             break;
          }
       }

@@ -3,9 +3,8 @@ package com.example.john.androidclient;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -29,11 +28,10 @@ public class Client extends AsyncTask<Void, String, Void> {
 
         try {
             socket = new Socket(dstAddress, dstPort);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null){
-                response += inputLine;
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            int input;
+            while ((input = in.readInt()) != -1){
+                response += input;
                 publishProgress(response);
             }
 
