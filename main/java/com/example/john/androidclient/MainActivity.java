@@ -1,6 +1,7 @@
 package com.example.john.androidclient;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,13 +25,14 @@ public class MainActivity extends Activity {
         buttonConnect = (Button) findViewById(R.id.connectButton);
         buttonClear = (Button) findViewById(R.id.clearButton);
         response = (TextView) findViewById(R.id.responseTextView);
-
+        final Intent intent = new Intent(this, GUIActivity.class);
         buttonConnect.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                com.example.john.androidclient.Client myClient = new com.example.john.androidclient.Client(addr, port, response);
-                myClient.execute();
+                //com.example.john.androidclient.Client myClient = new com.example.john.androidclient.Client(addr, port, response);
+                //myClient.execute();
+                startActivity(intent);
             }
         });
 

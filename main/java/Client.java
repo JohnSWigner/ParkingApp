@@ -1,6 +1,7 @@
 package com.example.john.androidclient;
 
 import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.DataInputStream;
@@ -12,13 +13,15 @@ public class Client extends AsyncTask<Void, String, Void> {
 
     String dstAddress;
     int dstPort;
-    String response = "";
-    TextView textResponse;
+    String response;
+    ImageView[] ivs;
+    int[] vals;
 
-    Client(String addr, int port, TextView textResponse) {
+    Client(String addr, int port, ImageView[] ivs, int[] vals) {
         dstAddress = addr;
         dstPort = port;
-        this.textResponse = textResponse;
+        this.ivs = ivs;
+        this.vals = vals;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class Client extends AsyncTask<Void, String, Void> {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             int input;
             while ((input = in.readInt()) != -1){
-                response += input;
+                response = Integer.toString(input);
                 publishProgress(response);
             }
 
@@ -39,10 +42,8 @@ public class Client extends AsyncTask<Void, String, Void> {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
                     1024);
             byte[] buffer = new byte[1024];
-
             int bytesRead;
             InputStream inputStream = socket.getInputStream();
-
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 byteArrayOutputStream.write(buffer, 0, bytesRead);
                 response += byteArrayOutputStream.toString("UTF-8");
@@ -52,11 +53,9 @@ public class Client extends AsyncTask<Void, String, Void> {
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            response = "UnknownHostException: " + e.toString();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            response = "IOException: " + e.toString();
         } finally {
             if (socket != null) {
                 try {
@@ -73,7 +72,25 @@ public class Client extends AsyncTask<Void, String, Void> {
 
     @Override
     protected void onProgressUpdate(String... result) {
-        textResponse.setText(response);
+        int temp;
+        temp = Integer.parseInt(result[0]);
+
+        if (vals[temp] == 0){
+            vals[temp] = 1;
+            ivs[temp].setImageResource(R.drawable.full);
+        } else {
+            vals[temp] = 0;
+            ivs[temp].setImageResource(R.drawable.empty);
+        }
+
+        //for (int i=0;i<response.length();i++) {
+            //1 for empty, 2 for full lmfaooo
+            //if (Character.toString(response.charAt(i)).equals("1")){
+                //ivs[i].setImageResource(R.drawable.empty);
+            //} else {
+                //ivs[i].setImageResource(R.drawable.full);
+            //}
+        //}
         super.onProgressUpdate(result);
     }
 
